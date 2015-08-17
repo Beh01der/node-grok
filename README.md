@@ -11,11 +11,11 @@ Install locally: `npm install node-grok`.
 Following simple snippet
 ```javascript
 var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
-var str = '65.19.138.33 [2015-05-13T08:04:43+10:00] "GET datasymphony.com.au/ru/feed/" 304 385 0 - 0.140 [HIT] "-" "Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)"\n';
+var str = '65.19.138.33 [2015-05-13T08:04:43+10:00] "GET datasymphony.com.au/ru/feed/" 304 385 0 - 0.140 [HIT] "-" "Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)"';
 
 require('node-grok').loadDefault(function (patterns) {
     var pattern = patterns.createPattern(p);
-    pattern.parse(str, function (err, obj) {
+    pattern.parse(str, function (err, result) {
         console.log(result);
     });
 });
@@ -41,6 +41,55 @@ into object
   "agent": "Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)" 
 }
 ```
+
+In order to be able to reuse existing patterns you can inject an existing pattern definition into your search pattern by using the dollar notation like this:
+```javascript
+var p = '${HAPROXYHTTP}"';
+var str = 'Aug 17 12:06:27 minion haproxy[3274]: 10.146.248.54:50901 [17/Aug/2015:12:06:27.379] http-in backend_gru/minion_8080 1/0/0/142/265 200 259 - - ---- 0/0/0/0/0 0/0 "GET /ping HTTP/1.1"';
+
+require('node-grok').loadDefault(function (patterns) {
+    var pattern = patterns.createPattern(p);
+    pattern.parse(str, function (err, result) {
+        console.log(result);
+    });
+});
+```
+will transform a `HAProxy` log entry
+```
+Aug 17 12:06:27 minion haproxy[3274]: 1.2.3.4:50901 [17/Aug/2015:12:06:27.379] http-in backend_gru/minion_8080 1/0/0/142/265 200 259 - - ---- 0/0/0/0/0 0/0 "GET /ping HTTP/1.1""
+```
+into object
+```json
+{ "syslog_timestamp": "Aug 17 12:06:27",
+  "syslog_server": "minion",
+  "client_ip": "1.2.3.4",
+  "client_port": "50901",
+  "accept_date": "17/Aug/2015:12:06:27.379",
+  "frontend_name": "http-in",
+  "backend_name": "backend_gru",
+  "server_name": "minion_8080",
+  "time_request": "1",
+  "time_queue": "0",
+  "time_backend_connect": "0",
+  "time_backend_response": "142",
+  "time_duration": "265",
+  "http_status_code": "200",
+  "bytes_read": "259",
+  "captured_request_cookie": "-",
+  "captured_response_cookie": "-",
+  "termination_state": "----",
+  "actconn": "0",
+  "feconn": "0",
+  "beconn": "0",
+  "srvconn": "0",
+  "retries": "0",
+  "srv_queue": "0",
+  "backend_queue": "0",
+  "http_verb": "GET",
+  "http_request": "/v2/deployments",
+  "http_version": "1.1" }
+```
+
 ## API
 * **loadDefault(callback, [loadModules])** - creates default pattern collection including all built-in patterns from `./patterns` folder. By providing *loadModules* parameter you can limit number of loaded patterns: `loadDefault(..., ['grok-patterns']);`. Callback receives *patterns* collection filled in with default templates: `function(patterns)`
 
