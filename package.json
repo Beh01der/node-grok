@@ -5,7 +5,7 @@
   "repository": "https://github.com/Beh01der/node-grok.git",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "node ./lib/index.js"
+    "test": "node_modules/mocha/bin/_mocha ./lib/test.js"
   },
   "keywords": [
     "regex",
@@ -19,5 +19,9 @@
     "collections": "^1.2.3",
     "line-reader": "^0.2.4",
     "oniguruma": "^4.2.1"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
   }
 }
