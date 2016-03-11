@@ -15,13 +15,13 @@
   "author": "Andrey Chausenko",
   "license": "ISC",
   "dependencies": {
-    "async": "^0.9.0",
-    "collections": "^2.0",
-    "line-reader": "^0.2.4",
-    "oniguruma": "^5.1.1"
+    "async": "1.5.2",
+    "collections": "3.0.0",
+    "line-reader": "0.2.4",
+    "oniguruma": "6.0.1"
   },
   "devDependencies": {
-    "chai": "^3.2.0",
-    "mocha": "^2.2.5"
+    "chai": "3.2.0",
+    "mocha": "2.2.5"
   }
 }
