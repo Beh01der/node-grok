@@ -24,28 +24,27 @@ require('node-grok').loadDefault(function (patterns) {
 ```
 will transform string
 ```
-65.19.138.33 [2015-05-13T08:04:43+10:00] "GET datasymphony.com.au/ru/feed/" 304 385 0 - 0.140 [HIT] "-" "Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)"
+203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"
 ```
 into object
 ```json
 { 
-   client: '203.35.135.165',
-   timestamp: '2016-03-15T12:42:04+11:00',
-   method: 'GET',
-   site: 'memz.co',
-   url: '/cloud/',
-   code: '304',
-   request: '962',
-   response: '0',
-   took: '0.003',
-   cache: 'MISS',
-   mtag: '-',
-   agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36' 
+   "client": "203.35.135.165",
+   "timestamp": "2016-03-15T12:42:04+11:00",
+   "method": "GET",
+   "site": "memz.co",
+   "url": "/cloud/",
+   "code": "304",
+   "request": "962",
+   "response": "0",
+   "took": "0.003",
+   "cache": 'MISS",
+   "mtag": "-",
+   "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36" 
 }
 ```
 
-## Synchronous version
-Following simple snippet
+## Synchronous version of code
 ```javascript
 var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
 var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
