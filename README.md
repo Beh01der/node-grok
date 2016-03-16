@@ -13,7 +13,7 @@ Install locally: `npm install node-grok`.
 Following simple snippet
 ```javascript
 var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
-var str = '65.19.138.33 [2015-05-13T08:04:43+10:00] "GET datasymphony.com.au/ru/feed/" 304 385 0 - 0.140 [HIT] "-" "Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)"\n';
+var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
 
 require('node-grok').loadDefault(function (patterns) {
     var pattern = patterns.createPattern(p);
@@ -28,29 +28,49 @@ will transform string
 ```
 into object
 ```json
-{
-  "client": "65.19.138.33",
-  "timestamp": "2015-05-13T08:04:43+10:00",
-  "method": "GET",
-  "site": "datasymphony.com.au",
-  "url": "/ru/feed/",
-  "code": "304",
-  "request": "385",
-  "response": "0",
-  "took": "0.140",
-  "cache": "HIT",
-  "mtag": "-",
-  "agent": "Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)" 
+{ 
+   client: '203.35.135.165',
+   timestamp: '2016-03-15T12:42:04+11:00',
+   method: 'GET',
+   site: 'memz.co',
+   url: '/cloud/',
+   code: '304',
+   request: '962',
+   response: '0',
+   took: '0.003',
+   cache: 'MISS',
+   mtag: '-',
+   agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36' 
 }
 ```
+
+## Synchronous version
+Following simple snippet
+```javascript
+var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
+
+var patterns = require('node-grok').loadDefaultSync();
+var pattern = patterns.createPattern(p);
+console.log(pattern.parseSync(str));
+```
+
 ## API
 * **loadDefault(callback, [loadModules])** - creates default pattern collection including all built-in patterns from `./patterns` folder. By providing *loadModules* parameter you can limit number of loaded patterns: `loadDefault(..., ['grok-patterns']);`. Callback receives *patterns* collection filled in with default templates: `function(patterns)`
 
+* **loadDefaultSync([loadModules])** - creates default pattern collection and returns it `GrokCollection`.
+
 * **GrokCollection.createPattern(expression, [id])** - creates new pattern and adds it to the collection. Find out more about pattern syntax [here](http://logstash.net/docs/1.4.2/filters/grok) and about regular expression syntax [here](http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt)
+
+* **GrokCollection.getPattern(id)** - returns existing pattern `GrokPattern`
 
 * **GrokCollection.load(filePath, next)** - loads patterns from file
 
+* **GrokCollection.loadSync(filePath)** - loads patterns from file and returns number of newly loaded patterns `number`
+
 * **GrokPattern.parse(str, callback)** - parses string using corresponding pattern. Callback function receives optional *error* and resulting object *result*: `function(error, result)`
+
+* **GrokPattern.parseSync(str)** - parses string using corresponding pattern and returns resulting object `object`
 
 Find out more about node-grok https://memz.co/parsing-log-files-node-js-regex-grok/ 
 
