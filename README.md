@@ -2,6 +2,8 @@
 
 This library is inspired by logstash grok filter but it's not a port of it.
 
+More details about usage and implementation here https://memz.co/parsing-log-files-node-js-regex-grok/
+
 This is a templating library that helps reusing existing regular expressions and constructing new, more complex one. The primary goal was to help parsing and transforming plain text logs into JSON objects (one line => one object) based on provided template. 
 
 ## Install
@@ -49,6 +51,8 @@ into object
 * **GrokCollection.load(filePath, next)** - loads patterns from file
 
 * **GrokPattern.parse(str, callback)** - parses string using corresponding pattern. Callback function receives optional *error* and resulting object *result*: `function(error, result)`
+
+Find out more about node-grok https://memz.co/parsing-log-files-node-js-regex-grok/ 
 
 ## License 
 **ISC License (ISC)**
