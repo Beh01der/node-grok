@@ -1,6 +1,6 @@
 {
   "name": "node-grok",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Regular expression template library inspired by logstash grok filter module",
   "repository": "https://github.com/Beh01der/node-grok.git",
   "main": "./lib/index.js",
