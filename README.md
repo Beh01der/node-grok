@@ -63,7 +63,7 @@ console.log(pattern.parseSync(str));
 
 * **GrokCollection.getPattern(id)** - returns existing pattern `GrokPattern`
 
-* **GrokCollection.load(filePath, next)** - loads patterns from file
+* **GrokCollection.load(filePath, callback)** - asynchronously loads patterns from file. Callback is `function(err)`.
 
 * **GrokCollection.loadSync(filePath)** - loads patterns from file and returns number of newly loaded patterns `number`
 
