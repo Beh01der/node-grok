@@ -55,15 +55,17 @@ console.log(pattern.parseSync(str));
 ```
 
 ## API
-* **loadDefault(callback, [loadModules])** - creates default pattern collection including all built-in patterns from `./patterns` folder. By providing *loadModules* parameter you can limit number of loaded patterns: `loadDefault(..., ['grok-patterns']);`. Callback receives *patterns* collection filled in with default templates: `function(patterns)`
+* **loadDefault([loadModules,] callback)** - creates new pattern collection including all built-in patterns from `./patterns` folder. By providing *loadModules* parameter you can limit number of loaded patterns: `loadDefault(['grok-patterns'] ,...);`. Callback receives *patterns* collection filled in with default templates: `function(err, patterns)`.
 
-* **loadDefaultSync([loadModules])** - creates default pattern collection and returns it `GrokCollection`.
+* **loadDefaultSync([loadModules])** - creates new default pattern collection and returns it `GrokCollection`.
+
+* **new GrokCollection()** - creates a new empty pattern collection.
 
 * **GrokCollection.createPattern(expression, [id])** - creates new pattern and adds it to the collection. Find out more about pattern syntax [here](http://logstash.net/docs/1.4.2/filters/grok) and about regular expression syntax [here](http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt)
 
 * **GrokCollection.getPattern(id)** - returns existing pattern `GrokPattern`
 
-* **GrokCollection.load(filePath, next)** - loads patterns from file
+* **GrokCollection.load(filePath, callback)** - asynchronously loads patterns from file. Callback is `function(err)`.
 
 * **GrokCollection.loadSync(filePath)** - loads patterns from file and returns number of newly loaded patterns `number`
 
