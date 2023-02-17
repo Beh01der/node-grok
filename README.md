@@ -71,8 +71,6 @@ console.log(pattern.parseSync(str));
 
 * **GrokPattern.parseSync(str)** - parses string using corresponding pattern and returns resulting object `object`
 
-Find out more about node-grok https://memz.co/parsing-log-files-node-js-regex-grok/ 
-
 ## License 
 **ISC License (ISC)**
 
